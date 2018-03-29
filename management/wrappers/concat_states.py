@@ -42,8 +42,8 @@ class ConcatStates(gym.Wrapper):
         state, reward, done, info = self.env.step(action)
 
         # concat the two state arrays, since some models only take a single output
-        # state = concat_states(state)
-        state = [state['history'],state['weights']]
+        state = concat_states(state)
+        # state = [state['history'],state['weights']]
         return state, reward, done, info
 
     def reset(self):
