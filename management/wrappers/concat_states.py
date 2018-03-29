@@ -17,6 +17,7 @@ def concat_states(state):
         weight_insert = np.ones(
             weight_insert_shape) * weights[np.newaxis, 1:, np.newaxis]
     state = np.concatenate([weight_insert, history], axis=1)
+    state = np.concatenate([state, np.ones((6,51,1))], axis=2)
     return state
 
 
@@ -35,7 +36,7 @@ class ConcatStates(gym.Wrapper):
         hist_space = self.observation_space.spaces["history"]
         hist_shape = hist_space.shape
         self.observation_space = gym.spaces.Box(-10, 10, shape=(
-            hist_shape[0], hist_shape[1] + 1, hist_shape[2]))
+            hist_shape[0], hist_shape[1] + 1, hist_shape[2] + 1))
 
     def step(self, action):
 
@@ -43,7 +44,7 @@ class ConcatStates(gym.Wrapper):
 
         # concat the two state arrays, since some models only take a single output
         state = concat_states(state)
-        # state = [state['history'],state['weights']]
+
         return state, reward, done, info
 
     def reset(self):
