@@ -5,6 +5,7 @@ from management.wrappers import SoftmaxActions, \
 import gym
 from subprocess import Popen
 import pandas
+import os
 from collections import deque
 class DeepRLWrapper(gym.Wrapper):
     def __init__(self, env, draw=False,draw_interval = 20):
@@ -60,6 +61,11 @@ class DeepRLWrapper(gym.Wrapper):
         # here's a roundabout way to get it to plot on reset
         if self.render_on_reset:
             self.env.render('notebook')
+        try:
+            os.remove('log.txt')
+        except:
+            print('ain\'t remove the log')
+            pass
 
         return self.env.reset()
 
