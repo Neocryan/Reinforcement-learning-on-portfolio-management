@@ -41,18 +41,19 @@ def ani(i):
         ax1.set_title('retrun in each term')
         ax2.set_title('ratio of each asset')
         ax3.set_title('assets price')
-        ax4.set_title('total reward')
+        ax4.set_title('portfolio value')
         ax2.pie(weights, explode=explode, labels=labels, autopct='%1.1f%%',
-                shadow=True, startangle=90)
+                shadow=False, startangle=90)
         ax2.axis('equal')
         ax1.plot(rw)
-
+        ax1.axhline(0, linestyle=':', c='grey', alpha=0.75)
         ax3.plot(p1, 'r', alpha=0.3, label='BTC')
         ax3.plot(p2, 'g', alpha=0.3, label='ETH')
         ax3.plot(p3, 'navy', alpha=0.3, label='LTC')
         ax3.plot(p4, 'brown', alpha=0.3, label='XRP')
         ax3.legend(loc=1)
         ax4.plot(his)
+        ax4.axhline(1, linestyle=':', c='grey', alpha=0.75)
     except:
         print('json load fail')
 
