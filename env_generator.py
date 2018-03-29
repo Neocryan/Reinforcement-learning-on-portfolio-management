@@ -7,7 +7,7 @@ from subprocess import Popen
 import pandas
 from collections import deque
 class DeepRLWrapper(gym.Wrapper):
-    def __init__(self, env, draw=False):
+    def __init__(self, env, draw=False,draw_interval = 20):
         super().__init__(env)
         self.render_on_reset = False
         self.plot = draw
@@ -18,7 +18,7 @@ class DeepRLWrapper(gym.Wrapper):
         self.plot_price3 = deque(maxlen=100)
         self.plot_price4 = deque(maxlen=100)
         self.total_history = deque(maxlen=3000)
-        self.plot_interval = 20
+        self.plot_interval = draw_interval
         self.plot_t = 0
         self.state_dim = self.observation_space.shape
         self.action_dim = self.action_space.shape[0]
@@ -64,7 +64,7 @@ class DeepRLWrapper(gym.Wrapper):
         return self.env.reset()
 
 
-def make_env(data='default_train', step=1000, visualization=False):
+def make_env(data='default_train', step=1000, visualization=False,draw_interval = 20):
     '''
     :usage : from env_generator import make_env
     :param data: should be a pd dataframe, or 'default_train', 'or default_test'
@@ -88,6 +88,5 @@ def make_env(data='default_train', step=1000, visualization=False):
     env = TransposeHistory(env)
     env = ConcatStates(env)
     env = SoftmaxActions(env)  # softmax --> action ouptut sum up to 1
-    env = DeepRLWrapper(env, draw=visualization)
+    env = DeepRLWrapper(env, draw=visualization,draw_interval = draw_interval)
     return env
-
