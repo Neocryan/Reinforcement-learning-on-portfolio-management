@@ -66,7 +66,12 @@ class DeepRLWrapper(gym.Wrapper):
         except:
             print('ain\'t remove the log')
             pass
-
+        self.plot_reward = deque(maxlen=100)
+        self.plot_price1 = deque(maxlen=100)
+        self.plot_price2 = deque(maxlen=100)
+        self.plot_price3 = deque(maxlen=100)
+        self.plot_price4 = deque(maxlen=100)
+        self.total_history = deque(maxlen=3000)
         return self.env.reset()
 
 
