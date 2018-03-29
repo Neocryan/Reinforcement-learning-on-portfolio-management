@@ -36,8 +36,7 @@ class DeepRLWrapper(gym.Wrapper):
         state, reward, done, info = self.env.step(action)
         reward *= 1e4  # often reward scaling is important sooo...
         if self.plot:
-            self.total_reward += reward
-            self.total_history.append(self.total_reward)
+            self.total_history.append(info['portfolio_value'])
             self.plot_weight = [info['weight_USD'],info['weight_BTC'],info['weight_ETH'],
                                 info['weight_LTC'],info['weight_XRP']]
             self.plot_reward.append(reward)
