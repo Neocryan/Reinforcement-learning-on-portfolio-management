@@ -5,18 +5,19 @@ from management.wrappers import SoftmaxActions, \
 import gym
 from subprocess import Popen
 import pandas
-
+from collections import deque
 class DeepRLWrapper(gym.Wrapper):
     def __init__(self, env, draw=False):
         super().__init__(env)
         self.render_on_reset = False
         self.plot = draw
-        self.plot_weight = None
-        self.plot_reward = []
-        self.plot_price1 = []
-        self.plot_price2 = []
-        self.plot_price3 = []
-        self.plot_price4 = []
+        self.plot_weight = []
+        self.plot_reward = deque(maxlen=100)
+        self.plot_price1 = deque(maxlen=100)
+        self.plot_price2 = deque(maxlen=100)
+        self.plot_price3 = deque(maxlen=100)
+        self.plot_price4 = deque(maxlen=100)
+        self.total_history = deque(maxlen=3000)
         self.plot_interval = 20
         self.plot_t = 0
         self.state_dim = self.observation_space.shape
@@ -24,7 +25,7 @@ class DeepRLWrapper(gym.Wrapper):
         self.total_reward = 0
         self.name = 'PortfolioEnv'
         self.success_threshold = 2
-        self.total_history = []
+
 
     def normalize_state(self, state):
         return state
@@ -36,7 +37,8 @@ class DeepRLWrapper(gym.Wrapper):
         if self.plot:
             self.total_reward += reward
             self.total_history.append(self.total_reward)
-            self.plot_weight = action
+            self.plot_weight = [info['weight_USD'],info['weight_BTC'],info['weight_ETH'],
+                                info['weight_LTC'],info['weight_XRP']]
             self.plot_reward.append(reward)
             self.plot_price1.append(info['price_BTC'])
             self.plot_price2.append(info['price_ETH'])
@@ -48,10 +50,10 @@ class DeepRLWrapper(gym.Wrapper):
             self.plot_t += 1
             if self.plot_t % self.plot_interval == 0:
                 with open('log.txt', 'w') as aa:
-                    aa.write('{}//{}//{}//{}//{}//{}//{}'.format(list(self.plot_weight), self.plot_reward,
-                                                                      self.plot_price1 , self.plot_price2,
-                                                                      self.plot_price3 , self.plot_price4,
-                                                                      self.total_history))
+                    aa.write('{}//{}//{}//{}//{}//{}//{}'.format(self.plot_weight,  list(self.plot_reward),
+                                                                 list(self.plot_price1) , list(self.plot_price2),
+                                                                 list(self.plot_price3) , list(self.plot_price4),
+                                                                 list(self.total_history)))
         return state, reward, done, info
 
     def reset(self):

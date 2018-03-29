@@ -21,19 +21,19 @@ def ani(i):
         p4 = eval(graph_data[5])
         his = eval(graph_data[6])
 
-        try:
-            rw = rw[-100:]
-            p1 = p1[-100:]
-            p2 = p2[-100:]
-            p3 = p3[-100:]
-            p4 = p4[-100:]
-
-        except:
-            pass
-        try:
-            his = his[-1000:]
-        except:
-            pass
+        # try:
+        #     rw = rw[-100:]
+        #     p1 = p1[-100:]
+        #     p2 = p2[-100:]
+        #     p3 = p3[-100:]
+        #     p4 = p4[-100:]
+        #
+        # except:
+        #     pass
+        # try:
+        #     his = his[-1000:]
+        # except:
+        #     pass
         ax1.clear()
         ax2.clear()
         ax3.clear()
