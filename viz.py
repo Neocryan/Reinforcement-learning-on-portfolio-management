@@ -50,7 +50,7 @@ def ani(i):
         ax3.plot(p1, 'r', alpha=0.3, label='BTC')
         ax3.plot(p2, 'g', alpha=0.3, label='ETH')
         ax3.plot(p3, 'navy', alpha=0.3, label='LTC')
-        ax3.plot(p4, 'yellow', alpha=0.3, label='XRP')
+        ax3.plot(p4, 'brown', alpha=0.3, label='XRP')
         ax3.legend(loc=1)
         ax4.plot(his)
     except:
@@ -58,4 +58,5 @@ def ani(i):
 
 
 anii = animation.FuncAnimation(fig, ani, interval=50)
+plt.tight_layout()
 plt.show()
