@@ -4,7 +4,7 @@ from management.wrappers import SoftmaxActions, \
     TransposeHistory, ConcatStates
 import gym
 from subprocess import Popen
-
+import pandas
 
 class DeepRLWrapper(gym.Wrapper):
     def __init__(self, env, draw=False):
@@ -71,11 +71,16 @@ def make_env(data='default_train', step=1000, visualization=False):
     :return: a gym environment
     '''
 
-    if data == 'default_train':
-        df = pd.read_hdf('data/df_train.hf', key='train')
-    elif data == 'default_test':
-        df = pd.read_hdf('data/df_test.hf', key='test')
+    if type(data) == str:
+        if data == 'default_train':
+            df = pd.read_hdf('data/df_train.hf', key='train')
+        elif data == 'default_test':
+            df = pd.read_hdf('data/df_test.hf', key='test')
+        else:
+            raise EnvironmentError("data should be should be a pd dataframe, or 'default_train', 'or default_test'")
+
     else:
+        assert type(data) == pandas.core.frame.DataFrame
         df = data
     env = PortfolioEnv(df=df, steps=step, output_mode='EIIE')
     env = TransposeHistory(env)
